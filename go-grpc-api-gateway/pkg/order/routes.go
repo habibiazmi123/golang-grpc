@@ -7,7 +7,7 @@ import (
 	"github.com/habibiazmi123/go-grpc-api-gateway/pkg/order/routes"
 )
 
-func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient) *ServiceClient {
+func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient) {
 	a := auth.InitAuthMiddleware(authSvc)
 
 	svc := &ServiceClient{
@@ -17,8 +17,6 @@ func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient
 	routes := r.Group("/order")
 	routes.Use(a.AuthRequired)
 	routes.POST("/", svc.CreateOrder)
-
-	return svc
 }
 
 func (svc *ServiceClient) CreateOrder(ctx *gin.Context) {
